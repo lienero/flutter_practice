@@ -1,5 +1,12 @@
 import 'package:dart01/dart01.dart' as dart01;
 
+// 변수의 값을 몇가지 옵션으로 제한하는 기능
+enum Status {
+  approved,
+  pending,
+  rejected,
+}
+
 void main() {
   print('Hello world:!');
 
@@ -31,4 +38,55 @@ void main() {
   print(newList);
   // newList를 List로 변환 .toList()
   print(newList.toList());
+
+  // List에 있는 값들을 순서대로 순회하면서 값을 변경할 수 있습니다.
+  final newBlackPink = blackPinkList.map((name) => '블랙핑크 $name');
+  print(newBlackPink);
+  print(newBlackPink.toList());
+
+  // List에 있는 값들을 순서대로 순회하면서 입력된 함수를 실행
+  final allMembers =
+      blackPinkList.reduce((value, element) => value + ',' + element);
+
+  print(allMembers);
+
+  // reduce() 함수와 실행되는 논리는 똑같지만 reduce()와 달리 어떠한 타입이든 반환가능
+  final allMembers2 =
+      blackPinkList.fold<int>(0, (value, element) => value + element.length);
+
+  print(allMembers2);
+
+  // 맵 타입은 키와 값의 짝을 저장함
+  Map<String, String> dictionary = {
+    'Harry Potter': '해리포터',
+    'Ron Weasley': '론 위즐리',
+    'Hermione Granger': '헤르미온느 그레인저',
+  };
+
+  print(dictionary['Harry Potter']);
+  print(dictionary['Hermione Granger']);
+  print(dictionary.keys);
+  print(dictionary.values);
+
+  // 중복없는 값들의 집합
+  Set<String> blackPink = {'로제', '지수', '리사', '제니'};
+
+  print(blackPink);
+  print(blackPink.contains('로제')); // 값이 있는지 확인
+  print(blackPink.toList());
+
+  Status stauts = Status.approved;
+  print(stauts);
+
+  // 타입 뒤에 ?를 명시해야만 null값을 가질 수 있음
+  double? number = null; // double? number 과 같은 값
+  // ?? 기존 값이 null일 때만 저장됩니다.
+  number ??= 3;
+  print(number);
+  number ??= 4; // null이 아님으로 3이 유지
+  print(number);
+
+  // 타입 비교 연산자
+  print(number is int);
+  print(number is! int);
 }
