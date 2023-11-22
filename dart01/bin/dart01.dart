@@ -7,6 +7,22 @@ enum Status {
   rejected,
 }
 
+int addTwoNumbers(int a, int b) {
+  return a + b;
+}
+
+// 네임드 파라미터 지정
+// required 파라미터는 null 값이 불가능한 타입이면 기본값을 지정해주거나 필수로 입력해야 한다는 뜻
+int reqAddTwoNumbers({required int a, required int b}) {
+  return a + b;
+}
+
+// 기본 값을 갖는 포지셔녈 파라미터
+// 네임드 파라미터와 섞어 쓰기 위해서는 반드시 포지셔널 파라미터가 위에 위치해야함
+int posAddTwoNumbers(int a, [int b = 2]) {
+  return a + b;
+}
+
 void main() {
   print('Hello world:!');
 
@@ -40,6 +56,7 @@ void main() {
   print(newList.toList());
 
   // List에 있는 값들을 순서대로 순회하면서 값을 변경할 수 있습니다.
+  // 화살표를 사용하면 람다 함수
   final newBlackPink = blackPinkList.map((name) => '블랙핑크 $name');
   print(newBlackPink);
   print(newBlackPink.toList());
@@ -89,4 +106,12 @@ void main() {
   // 타입 비교 연산자
   print(number is int);
   print(number is! int);
+
+  // 함수 테스트
+  // 기본 함수
+  print(addTwoNumbers(1, 2));
+  // 네임드 파리미터
+  print(reqAddTwoNumbers(a: 1, b: 2));
+  // 포지셔널 파라미터
+  print(posAddTwoNumbers(1));
 }
