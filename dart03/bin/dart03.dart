@@ -18,6 +18,26 @@ class Idol {
   void sayName() {
     print('저는 ${this.name}입니다. ${this.name} 멤버는 ${this.membersCount}명입니다.');
   }
+
+  void sayMembersCount() {
+    print('${this.name} 멤버는 ${this.membersCount}명 입니다.');
+  }
+}
+
+// extends 키워드를 사용하여 상속
+class BoyGroup extends Idol {
+  // 상속받은 생성자
+  BoyGroup(
+    String name,
+    int membersCount,
+  ) : super(
+          // super는 부모클래스를 지칭합니다
+          name, membersCount,
+        );
+  // 상속받지 않은 기능
+  void sayMale() {
+    print('저는 남자 아이돌입니다.');
+  }
 }
 
 void main() {
@@ -29,4 +49,10 @@ void main() {
     'membersCount': 7,
   });
   bts.sayName();
+
+  // 생성자로 객체 생성
+  BoyGroup bts2 = BoyGroup('BTS', 7);
+  bts2.sayName();
+  bts2.sayMembersCount();
+  bts2.sayMale();
 }
