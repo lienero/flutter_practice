@@ -53,6 +53,26 @@ class GirlGroup extends Idol {
   }
 }
 
+// implements 키워드를 사용하면 인터페이스로 사용 가능
+// 인터페이스는 반드시 모든 기능을 다시 정의해줘야함
+class GirlGroup2 implements Idol {
+  final String name;
+  final int membersCount;
+  GirlGroup2(
+    // 직접 super 키워드 사용
+    this.name,
+    this.membersCount,
+  );
+  // override 키워드를 사용해 오버라이드
+  void sayName() {
+    print('저는 여자 아이돌 ${this.name}입니다');
+  }
+
+  void sayMembersCount() {
+    print('${this.name} 멤버는 ${this.membersCount}명 입니다.');
+  }
+}
+
 void main() {
   Idol blackPink = Idol('블랙핑크', 4);
   blackPink.sayName();
@@ -72,4 +92,8 @@ void main() {
   GirlGroup blackPink2 = GirlGroup('블랙핑크', 4);
   // 오버라이드 된 메소드 사용
   blackPink2.sayName();
+
+  GirlGroup2 blackPink3 = GirlGroup2('블랙핑크', 4);
+  blackPink3.sayName();
+  blackPink3.sayMembersCount();
 }
