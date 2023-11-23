@@ -24,8 +24,15 @@ class Idol {
   }
 }
 
+mixin IdolSingMixin on Idol {
+  void sing() {
+    print('${this.name}이 노래를 부릅니다');
+  }
+}
+
 // extends 키워드를 사용하여 상속
-class BoyGroup extends Idol {
+// 믹스인을 적용할 때는 with 키워드 사용
+class BoyGroup extends Idol with IdolSingMixin {
   // 상속받은 생성자
   BoyGroup(
     String name,
@@ -88,6 +95,8 @@ void main() {
   bts2.sayName();
   bts2.sayMembersCount();
   bts2.sayMale();
+  // 믹스인에 정의된 함수 사용
+  bts2.sing();
 
   GirlGroup blackPink2 = GirlGroup('블랙핑크', 4);
   // 오버라이드 된 메소드 사용
