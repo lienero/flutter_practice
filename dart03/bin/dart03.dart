@@ -40,6 +40,19 @@ class BoyGroup extends Idol {
   }
 }
 
+class GirlGroup extends Idol {
+  GirlGroup(
+    // 직접 super 키워드 사용
+    super.name,
+    super.membersCount,
+  );
+  // override 키워드를 사용해 오버라이드
+  @override
+  void sayName() {
+    print('저는 여자 아이돌 ${this.name}입니다');
+  }
+}
+
 void main() {
   Idol blackPink = Idol('블랙핑크', 4);
   blackPink.sayName();
@@ -55,4 +68,8 @@ void main() {
   bts2.sayName();
   bts2.sayMembersCount();
   bts2.sayMale();
+
+  GirlGroup blackPink2 = GirlGroup('블랙핑크', 4);
+  // 오버라이드 된 메소드 사용
+  blackPink2.sayName();
 }
