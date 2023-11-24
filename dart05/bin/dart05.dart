@@ -54,10 +54,11 @@ class Counter {
 }
 
 void main(List<String> arguments) {
-  GirlGroup blackPink = GirlGroup('블랙핑크', 4);
-
-  blackPink.sayName();
-  blackPink.sayMembersCount();
+  // cascade operator (..)을 사용하면
+  // 선언한 변수의 메서드를 연속으로 실핼할 수 있습니다.
+  GirlGroup blackPink = GirlGroup('블랙핑크', 4)
+    ..sayName()
+    ..sayMembersCount();
 
   // T타입을 List<int>로 입력
   final cache = Cache<List<int>>(data: [1, 2, 3]);
