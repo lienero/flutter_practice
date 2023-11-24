@@ -42,6 +42,17 @@ class Cache<T> {
   });
 }
 
+class Counter {
+  // static 키워드를 사용하여 static 변수 선언
+  // static 클래스 자체에 귀속
+  static int i = 0;
+
+  Counter() {
+    i++;
+    print(i);
+  }
+}
+
 void main(List<String> arguments) {
   GirlGroup blackPink = GirlGroup('블랙핑크', 4);
 
@@ -53,4 +64,7 @@ void main(List<String> arguments) {
 
   // 제네릭에 입력된 값을 통해 data 변수의 타입이 자동으로 유추
   print(cache.data.reduce((value, element) => value + element));
+
+  Counter count1 = Counter();
+  Counter count2 = Counter();
 }
