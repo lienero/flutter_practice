@@ -8,10 +8,19 @@ void main() {
   // Stream은 지속적으로 값을 반환 받을 때 사용함.
   final controller = StreamController();
   // stream 가져오기
-  final stream = controller.stream;
+  // ex) final stream = controller.stream;
+  // 여러 번 리슨할 수 있는 Broadcast Stream 객체 생성
+  final stream = controller.stream.asBroadcastStream();
 
   // stream에 listen() 함수를 실행하면 값이 주입될 떄마다 콜백 함수를 실행할 수 있습니다.
+  // 첫 listen() 함수
   final streamListener1 = stream.listen((val) {
+    print('Listening 1');
+    print(val);
+  });
+
+  final streamListener2 = stream.listen((val) {
+    print('Listening 2');
     print(val);
   });
 
