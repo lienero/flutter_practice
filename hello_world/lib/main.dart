@@ -7,8 +7,8 @@ void main() {
       // Scaffold 위젯
       home: Scaffold(
         // Text 위젯
-        body: Text(
-          'Hello Code Factory',
+        body: Center(
+          child: Text('Hello Code Factory',)
         ),
       ),
     ),
