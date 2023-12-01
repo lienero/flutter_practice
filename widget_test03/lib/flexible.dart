@@ -21,6 +21,7 @@ class ColumnWidgetExample extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               // 넣고 싶은 위젯 입력
               children: [
+                // 화면에서 차지할 비율을 지정
                 Flexible(
                   // flex는 남은 공간을 차지할 비율을 의미합니다.
                   // flex값을 제공하지 않으면 기본 값은 1입니다.
