@@ -13,6 +13,7 @@ class RowWidgetExample extends StatelessWidget {
         body: SizedBox(
           // 반대 축에서 이동할 공간을 제공하기 위해 높이를 최대한으로 설정
           height: double.infinity,
+          // 위젯을 가로로 배치
           child: Row(
             // 주축 정렬 지정
             mainAxisAlignment: MainAxisAlignment.start,
