@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
+          // 테두리가 있는 버튼
           child: OutlinedButton(
             // 클릭 시 실행
             onPressed: () {},

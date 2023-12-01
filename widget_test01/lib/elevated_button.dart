@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
+          // 입체적으로 튀어나온 느낌의 배경이 들어간 버튼
           child: ElevatedButton(
             // 클릭 시 실행
             onPressed: () {},

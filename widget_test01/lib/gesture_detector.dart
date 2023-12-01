@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
+          // 손가락으로 하는 여러가지 입력을 인지하는 위젯
           child: GestureDetector(
             // 한 번 탭했을 때 실행할 함수
             onTap: (){

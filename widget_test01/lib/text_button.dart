@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
+          // 텍스트만 있는 버튼
           child: TextButton(
             // 클릭 시 실행
             onPressed: () {},

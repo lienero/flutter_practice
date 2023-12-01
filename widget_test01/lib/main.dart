@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
           body: Center(
+            // 글자를 적고 스타일링 하는 위젯
             child: Text(
               // 작성하고 싶은 글
               '코드팩토리',

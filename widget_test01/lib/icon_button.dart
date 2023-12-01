@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: Scaffold(
         body: Center(
+          // 아이콘을 버튼으로 생성하는 위젯
           child: IconButton(
             // 클릭 시 실행
             onPressed: () {},
