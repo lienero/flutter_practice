@@ -1,8 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   // const 생성자
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  // 컨트롤러 변수 생성
+  late final WebViewController controller;
+
+  @override
+  void initState() {
+    super.initState();
+    controller = WebViewController()
+      ..loadRequest(
+        Uri.parse('https://blog.codefactory.ai'),
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +33,8 @@ class HomeScreen extends StatelessWidget {
         // 가운데 정렬
         centerTitle: true, 
       ),
-      body: Text('Home Screen'),
+      // Webview 추가
+      body: WebViewWidget(controller: controller,),
     );
   }
 }
