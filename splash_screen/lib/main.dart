@@ -15,10 +15,28 @@ class SplashScreen extends StatelessWidget {
         body: Container( // 컨테이너 위젯
           // 컨테이너를 디자인하는 클래스
           decoration: BoxDecoration(color: Color(0xFFF99231)),
-          // 중앙 정렬 위젯
-          child: Center(
-            // 글자를 화면에 보여주는 위젯
-            child: Image.asset('assets/logo.png'),
+          // 가로, 세로를 최대로 사용하기 위해 row, column을 섞음
+          child: Row(
+            // 가운데 정렬 추가
+            mainAxisAlignment: MainAxisAlignment.center,
+            // 여러 위젯을 입력할 수 있는 chidren 매개변수
+            children: [
+              Column(
+                // 가운데 정렬 추가
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/logo.png',
+                    width: 200,
+                  ),
+                  // 로딩 위젯
+                  CircularProgressIndicator(
+                    // 로딩 위젯 색 지정
+                    valueColor: AlwaysStoppedAnimation(Colors.white),
+                  ),
+                ]
+              )
+            ]
           ),
         )
       )
