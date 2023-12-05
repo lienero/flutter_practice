@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+    // 웹뷰가 생성됐을 때 단 한번만 실행
     controller = WebViewController()
       ..loadRequest(
         Uri.parse('https://blog.codefactory.ai'),
@@ -31,7 +32,22 @@ class _HomeScreenState extends State<HomeScreen> {
         // 앱 타이틀 설정
         title: Text('Code Factory'),
         // 가운데 정렬
-        centerTitle: true, 
+        centerTitle: true,
+        // AppBar의 actions 매개 변수
+        actions: [
+          IconButton(
+            // 눌렀을 때 콜백함수 설정
+            onPressed: () {
+              if (controller != null) {
+                // 웹뷰에서 보여줄 사이트 실행하기
+                // null 이 가능한 타입으로 선언됐이에 ! 기호 추가
+                controller!.loadRequest(Uri.parse('https://blog.codefactory.ai'));
+              }
+            },
+            // 홈버튼 아이콘 설정
+            icon: Icon(Icons.home,),
+          ),
+        ],
       ),
       // Webview 추가
       body: WebViewWidget(controller: controller,),
