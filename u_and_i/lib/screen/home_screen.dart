@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -37,12 +38,26 @@ class _HomeScreenState extends State<HomeScreen> {
   }
   // 하트를 눌렀을 때 실행할 함수
   void onHeartPressed() {
-    // setState() : 상태 변경하는 함수
-    setState(() {
-      // firstDay 변수에서 하루 빼기
-      // subtract() : 원하는 만큼 기간을 뺴는 함수, Duration으로 기간을 정하고 사용
-      firstDay = firstDay.subtract(Duration(days: 1));
-    });
+    // 쿠퍼티노 다이얼로그 실행
+    showCupertinoDialog(
+      context: context, // 보여줄 다이얼로그 빌드
+      builder: (BuildContext context) {
+        return Align( // 정렬을 지정하는 위젯
+          alignment: Alignment.bottomCenter, // 아래 중간으로 정렬
+          child: Container(
+            color: Colors.white,
+            height: 300,
+            child: CupertinoDatePicker(
+              // 시간 제외하고 날짜만 선택하기
+              mode: CupertinoDatePickerMode.date,
+              onDateTimeChanged: (DateTime date) {},
+            ),
+          ),
+        );
+      },
+      // 외부 탭할 경우 다이얼로그 닫기
+      barrierDismissible: true,
+    );
   }
 }
 
