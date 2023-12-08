@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  DateTime firstDay = DateTime.now();
 
   @override
   Widget build(BuildContext context) {
@@ -17,38 +24,71 @@ class HomeScreen extends StatelessWidget {
           // 반대축 최대 크기로 늘리기
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            _DDay(),
+            _DDay(
+              // 하트를 눌렀을 때 실행할 함수 전달하기
+              onHeartPressed: onHeartPressed,
+              firstDay: firstDay,
+            ),
             _CoupleImage(),
           ],
         ),
       ),
     );
   }
+  // 하트를 눌렀을 때 실행할 함수
+  void onHeartPressed() {
+    // setState() : 상태 변경하는 함수
+    setState(() {
+      // firstDay 변수에서 하루 빼기
+      // subtract() : 원하는 만큼 기간을 뺴는 함수, Duration으로 기간을 정하고 사용
+      firstDay = firstDay.subtract(Duration(days: 1));
+    });
+  }
 }
 
 // 첫 글자가 언더스코어면 다른 파일에서 접근할 수 없음
 class _DDay extends StatelessWidget {
+  // 하트를 눌렀을 때 실행할 함수
+  final GestureTapCallback onHeartPressed;
+  // 사귀기 시작한 날
+  final DateTime firstDay;
+
+  _DDay({
+    // 상위에서 함수 입력받기
+    required this.onHeartPressed,
+    required this.firstDay,
+  });
+
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final now = DateTime.now();
     return Column(
       children: [
         const SizedBox(height: 16),
         Text('U&I', style: textTheme.headline1,),
         const SizedBox(height: 16),
         Text('우리 처음 만난 날', style: textTheme.bodyText1,),
-        Text('2021.11.23', style: textTheme.bodyText2,),
+        Text(
+          '${firstDay.year}.${firstDay.month}.${firstDay.day}',
+          style: textTheme.bodyText2,
+        ),
         const SizedBox(height: 16),
         IconButton(
             iconSize: 60,
-            onPressed: () {},
+            onPressed: onHeartPressed, // 아이콘 눌렀을 때 실행할 함수
             icon: Icon(
               Icons.favorite,
               color: Colors.red,
             )
         ),
         const SizedBox(height: 16),
-        Text('D+365', style: textTheme.headline2,),
+        // D-DAY
+        Text(
+          'D+${DateTime(now.year, now.month, now.day)
+              .difference(firstDay).inDays + 1}', // D-DAY 계산
+          style: textTheme.headline2,
+        ),
       ],
     );
   }
