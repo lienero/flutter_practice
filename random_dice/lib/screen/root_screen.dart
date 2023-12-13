@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:random_dice/screen/home_screen.dart';
+import 'package:random_dice/screen/settings_screen.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({Key? key}) : super(key: key);
@@ -13,6 +14,7 @@ class _RootScreenState extends State<RootScreen> with
 // TabController에서 vsyn 사용 위해선 TickerProviderStateMixin 필수
 TickerProviderStateMixin{
   TabController? controller; // 사용할 TabController 선언
+  double threshold = 2.7; // 민감도 기본값 설정
   @override
   void initState() {
     super.initState();
@@ -49,15 +51,18 @@ TickerProviderStateMixin{
   List<Widget> renderChildren() {
     return [
       HomeScreen(number: 1),
-      Container( // 설정 스크린 탭
-        child: Center(
-          child: Text(
-            'Tab 2',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
+      SettingsScreen(
+        threshold: threshold,
+        onThresholdChange: onThresholdChange,
       )
     ];
+  }
+
+  // 슬라이더값 변경 시 실행 함수
+  void onThresholdChange(double val) {
+    setState(() {
+      threshold = val;
+    });
   }
 
   BottomNavigationBar renderBottomNavigation() {
