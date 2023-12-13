@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:random_dice/screen/home_screen.dart';
 import 'package:random_dice/screen/settings_screen.dart';
+import 'dart:math';
+import 'package:shake/shake.dart';
 
 class RootScreen extends StatefulWidget {
   const RootScreen({Key? key}) : super(key: key);
@@ -15,13 +17,33 @@ class _RootScreenState extends State<RootScreen> with
 TickerProviderStateMixin{
   TabController? controller; // 사용할 TabController 선언
   double threshold = 2.7; // 민감도 기본값 설정
+  int number = 1; // 주사위 숫자
+  ShakeDetector? shakeDetector;
+
   @override
   void initState() {
     super.initState();
+
     // 컨트롤러 초기화
     controller = TabController(length: 2, vsync: this);
     // 컨트롤러 속성이 변경될 때 마다 실행할 함수 등록
     controller!.addListener(tabListner);
+
+    // 흔들기 감지 즉시 시작
+    shakeDetector = ShakeDetector.autoStart(
+      shakeSlopTimeMS: 100, // 감지 주기
+      shakeThresholdGravity: threshold, // 감지 민감도
+      onPhoneShake: onPhoneShake, // 감지 후 실행 할 함수
+    );
+  }
+
+  // 흔들기 감지 후 실행할 함수
+  void onPhoneShake() {
+    final rand = new Random();
+
+    setState(() {
+      number = rand.nextInt(5) + 1;
+    });
   }
 
   // 리스너로 사용할 함수
@@ -31,8 +53,8 @@ TickerProviderStateMixin{
 
   @override
   dispose() { // dispose : 위젯이 삭제될 때 실행
-    // 리스너에 등록한 함수 등록 취소
-    controller!.removeListener(tabListner);
+    controller!.removeListener(tabListner); // 리스너에 등록한 함수 등록 취소
+    shakeDetector!.stopListening(); // 흔들기 감지 중지
     super.dispose();
   }
 
@@ -50,7 +72,7 @@ TickerProviderStateMixin{
 
   List<Widget> renderChildren() {
     return [
-      HomeScreen(number: 1),
+      HomeScreen(number: number),
       SettingsScreen(
         threshold: threshold,
         onThresholdChange: onThresholdChange,
