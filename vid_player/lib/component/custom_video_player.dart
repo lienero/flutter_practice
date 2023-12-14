@@ -101,17 +101,32 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
               bottom: 0,
               right: 0,
               left: 0,
-              child: Slider(
-                onChanged: (double val) { // 슬라이더가 이동할 때 마다 실행
-                  videoController!.seekTo( // seekTo함수는 동영상의 재생 위치를 특정 위치로 이동
-                    Duration(seconds: val.toInt())
-                  );
-                },
-                // 동영상 재생 위치를 초 단위로 표현
-                value: videoController!.value.position.inSeconds.toDouble(),
-                min: 0,
-                // max 매개변수에는 double 값을 입력해야함
-                max: videoController!.value.duration.inSeconds.toDouble(),
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    renderTimeTextFromDuration(
+                      // 동영상 현재 위치
+                      videoController!.value.position,
+                    ),
+                    Expanded( // child 요소를 렌더링 영역의 최대 사이즈
+                      child: Slider(
+                        onChanged: (double val) { // 슬라이더가 이동할 때 마다 실행
+                          videoController!.seekTo( // seekTo함수는 동영상의 재생 위치를 특정 위치로 이동
+                              Duration(seconds: val.toInt())
+                          );
+                        },
+                        // 동영상 재생 위치를 초 단위로 표현
+                        value: videoController!.value.position.inSeconds.toDouble(),
+                        min: 0,
+                        // max 매개변수에는 double 값을 입력해야함
+                        max: videoController!.value.duration.inSeconds.toDouble(),
+                      ),
+                    ),
+                    // 동영상 총 길이
+                    renderTimeTextFromDuration(videoController!.value.duration,)
+                  ],
+                ),
               )
             ),
             if (showControls)
@@ -147,8 +162,17 @@ class _CustomVideoPlayerState extends State<CustomVideoPlayer> {
                 ),
               ),
           ],
-        )
-      )
+        ),
+      ),
+    );
+  }
+
+  Widget renderTimeTextFromDuration(Duration duration) {
+    // Duration값을 보기 편한 형태로 변환하기
+    return Text(
+      '${duration.inMinutes.toString().padLeft(2, '0')}:'
+      '${(duration.inSeconds % 60).toString().padLeft(2, '0')}',
+      style: TextStyle(color: Colors.white),
     );
   }
 
