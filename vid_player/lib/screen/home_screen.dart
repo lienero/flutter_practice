@@ -24,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget renderEmpty() {
     return Container(
       width: MediaQuery.of(context).size.width, // 넓이를 최대로
+      decoration: getBoxDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -32,6 +33,21 @@ class _HomeScreenState extends State<HomeScreen> {
           _AppName(),
         ],
       ),
+    );
+  }
+
+  // 배경색 그라데이션
+  BoxDecoration getBoxDecoration() {
+    return BoxDecoration(
+      // 그라데이션으로 색상 적용하기
+      gradient: LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          Color(0xFF2A3A7C),
+          Color(0xFF000118),
+        ]
+      )
     );
   }
 
