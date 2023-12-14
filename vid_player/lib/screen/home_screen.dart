@@ -28,12 +28,27 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          _Logo(),
+          _Logo(
+            onTap: onNewVideoPressed,
+          ),
           SizedBox(height: 30),
           _AppName(),
         ],
       ),
     );
+  }
+
+  // 이미지 선택기능
+  void onNewVideoPressed() async {
+    final video = await ImagePicker().pickVideo(
+        source: ImageSource.gallery,
+    );
+
+    if (video != null) {
+      setState(() {
+        this.video = video;
+      });
+    }
   }
 
   // 배경색 그라데이션
@@ -59,11 +74,18 @@ class _HomeScreenState extends State<HomeScreen> {
 
 // 로고를 보여줄 위젯
 class _Logo extends StatelessWidget {
-  const _Logo({Key? key,}) : super(key: key);
+  final GestureTapCallback onTap; // 탭했을 때 실행할 함수
+  const _Logo({
+    required this.onTap,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset('asset/img/logo.png');
+    return GestureDetector(
+      onTap: onTap, // 상위 위젯으로부터 탭 콜백받기
+      child: Image.asset('asset/img/logo.png'),
+    );
   }
 }
 
