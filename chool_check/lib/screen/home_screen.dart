@@ -8,9 +8,20 @@ class HomeScreen extends StatelessWidget {
     126.921252, // 경도
   );
 
+  // 현재 위치 마커
   static final Marker marker = Marker(
     markerId: MarkerId('company'),
     position: companyLatLng,
+  );
+
+  // 현재 위치 반경
+  static final Circle circle = Circle(
+    circleId: CircleId('choolCheckCircle'),
+    center: companyLatLng, // 윈의 중심이 되는 위치, LatLng값을 제공합니다.
+    fillColor: Colors.blue.withOpacity(0.5), // 원의 색상
+    radius: 100, // 원의 반지름
+    strokeColor: Colors.blue, // 원의 테두리 색
+    strokeWidth: 1, // 원의 테두리 두께
   );
 
   const HomeScreen({Key? key}) : super(key: key);
@@ -42,6 +53,7 @@ class HomeScreen extends StatelessWidget {
                         zoom: 16 // 확대 정도 (높을수록 크게 보임)
                     ),
                     markers: Set.from([marker]),
+                    circles: Set.from([circle]),
                   ),
                 ),
                 Expanded(
