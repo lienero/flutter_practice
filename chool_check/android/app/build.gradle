@@ -22,11 +22,13 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
-def googleMapsApiKey = localProperties.getProperty('google.maps.apiKey')
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+def googleMapsApiKey = properties.getProperty('google.maps.apiKey')
 
 android {
     namespace "com.example.chool_check"
-    compileSdkVersion 33
+    compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 
     compileOptions {
