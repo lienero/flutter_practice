@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:image_editor/component/main_app_bar.dart';
+import 'package:image_picker/image_picker.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  XFile? image; // 선택한 이미지를 저장할 변수
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +33,14 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  void onPickImage() {}
+  void onPickImage() async {
+    // 갤러리에서 이미지 선택
+    final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      this.image = image; // 선택한 이미지 저장
+    });
+  }
 
   void onSaveImage() {}
 
