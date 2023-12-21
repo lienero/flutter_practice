@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_editor/component/main_app_bar.dart';
+import 'package:image_editor/component/footer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
@@ -20,11 +21,25 @@ class _HomeScreenState extends State<HomeScreen> {
         fit: StackFit.expand, // 자식 위젯들 최대 크기로 펼치기
         children: [
           renderBody(),
-          MainAppBar(
-            onPickImage: onPickImage,
-            onSaveImage: onSaveImage,
-            onDeleteImage: onDeleteImage,
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            child: MainAppBar(
+              onPickImage: onPickImage,
+              onSaveImage: onSaveImage,
+              onDeleteImage: onDeleteImage,
+            ),
           ),
+          if (image != null)
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Footer(
+                onEmotcionTap: onEmotcionTap,
+              )
+            )
         ],
       ),
     );
@@ -52,6 +67,8 @@ class _HomeScreenState extends State<HomeScreen> {
       );
     }
   }
+
+  void onEmotcionTap(int index) {}
 
   void onPickImage() async {
     // 갤러리에서 이미지 선택
