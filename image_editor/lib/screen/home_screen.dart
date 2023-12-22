@@ -123,5 +123,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void onSaveImage() {}
 
-  void onDeleteImage() {}
+  void onDeleteImage() async {
+    setState(() {
+      // 현재 선택돼있는 스티커 삭제 후 Set 변환
+      stickers = stickers.where((sticker) => sticker.id != selectedId).toSet();
+    });
+  }
 }
