@@ -3,9 +3,14 @@ import 'package:cf_tube/model/video_model.dart';
 import 'package:cf_tube/repository/youtube_repository.dart';
 import 'package:flutter/material.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,13 +35,18 @@ class HomeScreen extends StatelessWidget {
             );
           }
 
-          return ListView( // List<VideoModel>을 CustomYotubePlayer로 매핑
-            // 아래로 당겨서 스크롤할 떄 튕기는 애니메이션 추가
-            physics: BouncingScrollPhysics(),
-            children: snapshot.data!
-              .map((e) => CustomYoutubePlayer(videoModel: e))
-              .toList(),
-          );
+          return RefreshIndicator( // 새로고침 기능이 있는 위젯
+            onRefresh: () async {
+              setState(() {});
+            },
+            child: ListView( // List<VideoModel>을 CustomYotubePlayer로 매핑
+              // 아래로 당겨서 스크롤할 떄 튕기는 애니메이션 추가
+              physics: BouncingScrollPhysics(),
+              children: snapshot.data!
+                  .map((e) => CustomYoutubePlayer(videoModel: e))
+                  .toList(),
+            ),
+          ) ;
         }
       )
     );
