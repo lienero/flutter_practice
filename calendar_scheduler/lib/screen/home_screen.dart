@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:calendar_scheduler/component/main_calendar.dart';
+import 'package:calendar_scheduler/component/schedule_card.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -26,6 +27,11 @@ class _HomeScreenState extends State<HomeScreen> {
               selectedDate: selectedDate, // 선택된 날짜 전달하기
               onDaySelected: onDaySelected, // 날짜가 선택될 때 실행할 함수
             ),
+            ScheduleCard(
+              startTime: 12,
+              endTime: 14,
+              content: '프로그래밍 공부'
+            )
           ],
         ),
       ),
