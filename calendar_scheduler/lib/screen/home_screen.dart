@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:calendar_scheduler/const/colors.dart';
 import 'package:calendar_scheduler/component/main_calendar.dart';
 import 'package:calendar_scheduler/component/schedule_card.dart';
 import 'package:calendar_scheduler/component/today_banner.dart';
 import 'package:calendar_scheduler/component/schedule_bottom_sheet.dart';
+import 'package:calendar_scheduler/database/drift_database.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -50,11 +52,33 @@ class _HomeScreenState extends State<HomeScreen> {
               count: 0
             ),
             SizedBox(height: 8),
-            ScheduleCard(
-              startTime: 12,
-              endTime: 14,
-              content: '프로그래밍 공부'
-            )
+            Expanded( // 남는 공간 모두 차지하기
+              // 일정 정보가 stream으로 제공되기 때문에 streambuiler 사용
+              child: StreamBuilder<List<Schedule>>(
+                stream: GetIt.I<LocalDatabase>().watchScedules(selectedDate),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) { // 데이터가 없을 때
+                    return Container();
+                  }
+                  return ListView.builder( // 화면에 보이는 값들만 렌더링하는 리스트
+                    // 리스트에 입력할 값들의 총 개수
+                    itemCount: snapshot.data!.length,
+                    itemBuilder: (context, index) {
+                      // 현재 인덱스에 해당되는 일정
+                      final schedule = snapshot.data![index];
+                      return Padding( // 좌우로 패딩을 추가해서 ui 개선
+                        padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                        child: ScheduleCard(
+                          startTime: schedule.startTime,
+                          endTime: schedule.endTime,
+                          content: schedule.content,
+                        ),
+                      );
+                    }
+                  );
+                },
+              )
+            ),
           ],
         ),
       ),
