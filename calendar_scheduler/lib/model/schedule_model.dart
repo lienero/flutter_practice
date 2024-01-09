@@ -37,7 +37,7 @@ class ScheduleModel {
     String? content,
     DateTime? date,
     int? startTime,
-    int? endTime;
+    int? endTime,
   }) {
     return ScheduleModel(
         id: id ?? this.id,
@@ -45,7 +45,6 @@ class ScheduleModel {
         date: date ?? this.date,
         startTime: startTime ?? this.startTime,
         endTime: endTime ?? this.endTime
-    )
+    );
   }
-
 }
