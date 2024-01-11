@@ -6,15 +6,11 @@ import 'package:calendar_scheduler/component/schedule_card.dart';
 import 'package:calendar_scheduler/component/today_banner.dart';
 import 'package:calendar_scheduler/component/schedule_bottom_sheet.dart';
 import 'package:calendar_scheduler/database/drift_database.dart';
+import 'package:provider/provider.dart';
+import 'package:calendar_scheduler/provider/schedule_provider.dart';
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
+// 프로바이더로 상태를 관리하기에 statefulwidget 사용하지 않음
+class HomeScreen extends StatelessWidget {
   DateTime selectedDate = DateTime.utc( // 선택된 날짜를 관리할 변수
     DateTime.now().year,
     DateTime.now().month,
@@ -23,6 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // 프로바이더 변경이 있을 때 마다 build 함수 재실행
+    final provider = context.watch<ScheduleProvider>();
+    // 선택된 날짜 가져오기
+    final selectedDate = provider.selectedDate;
+    // 선택된 날짜에 해당하는 일정들 가져오기
+    final schedules = provider.cache[selectedDate] ?? [];
+
     return Scaffold(
       floatingActionButton: FloatingActionButton( // 새 일정 버튼
         backgroundColor: PRIMARY_COLOR,
@@ -44,55 +47,44 @@ class _HomeScreenState extends State<HomeScreen> {
             // 미리 작업해둔 달력 위젯 보여주기
             MainCalendar(
               selectedDate: selectedDate, // 선택된 날짜 전달하기
-              onDaySelected: onDaySelected, // 날짜가 선택될 때 실행할 함수
+              // 날짜가 선택될 때 실행할 함수
+              onDaySelected: (selectedDate, focusedDate) =>
+                onDaySelected(selectedDate, focusedDate, context),
             ),
             SizedBox(height: 8),
-            StreamBuilder<List<Schedule>>( // 일정 Stream으로 받아오기
-              // Stream을 사용하면 지속적으로 변화가 있을 때 새로운 값을 받아들임
-              stream: GetIt.I<LocalDatabase>().watchScedules(selectedDate),
-              builder: (context, snapshot) {
-                return TodayBanner(
-                  selectedDate: selectedDate,
-                  count: snapshot.data?.length ?? 0, // 일정 개수 입력해주기
-                );
-              }
+            TodayBanner( // build() 함수 내부의 TodayBanner 위젯
+              selectedDate: selectedDate,
+              count: schedules.length,
             ),
             SizedBox(height: 8),
             Expanded( // 남는 공간 모두 차지하기
-              // 일정 정보가 stream으로 제공되기 때문에 streambuiler 사용
-              child: StreamBuilder<List<Schedule>>(
-                stream: GetIt.I<LocalDatabase>().watchScedules(selectedDate),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) { // 데이터가 없을 때
-                    return Container();
-                  }
-                  return ListView.builder( // 화면에 보이는 값들만 렌더링하는 리스트
-                    // 리스트에 입력할 값들의 총 개수
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: (context, index) {
-                      // 현재 인덱스에 해당되는 일정
-                      final schedule = snapshot.data![index];
-                      return Dismissible( // Dismissible 위젯을 사용하면 제스처 기능 지원
-                        key: ObjectKey(schedule.id), // 유니크한 키값
-                        // 밀기 방향(오른쪽에서 왼쪽으로)
-                        direction: DismissDirection.startToEnd,
-                        // 밀기 했을 때 실행할 함수
-                        onDismissed: (DismissDirection direction) {
-                          GetIt.I<LocalDatabase>().removeSchedule(schedule.id);
-                        },
-                        child: Padding( // 좌우로 패딩을 추가해서 ui 개선
-                          padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
-                          child: ScheduleCard(
-                          startTime: schedule.startTime,
-                          endTime: schedule.endTime,
-                          content: schedule.content,
-                          ),
-                        ),
-                      );
-                    }
+              // streambuiler를 프로바이더로 대체
+              child: ListView.builder( // 화면에 보이는 값들만 렌더링하는 리스트
+                // 리스트에 입력할 값들의 총 개수
+                itemCount: schedules.length,
+                itemBuilder: (context, index) {
+                  // 현재 인덱스에 해당되는 일정
+                  final schedule = schedules[index];
+
+                  return Dismissible( // Dismissible 위젯을 사용하면 제스처 기능 지원
+                    key: ObjectKey(schedule.id), // 유니크한 키값
+                    // 밀기 방향(오른쪽에서 왼쪽으로)
+                    direction: DismissDirection.startToEnd,
+                    // 밀기 했을 때 실행할 함수
+                    onDismissed: (DismissDirection direction) {
+                      provider.deleteSchedule(date: selectedDate, id: schedule.id);
+                    },
+                    child: Padding( // 좌우로 패딩을 추가해서 ui 개선
+                      padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
+                      child: ScheduleCard(
+                        startTime: schedule.startTime,
+                        endTime: schedule.endTime,
+                        content: schedule.content,
+                      ),
+                    ),
                   );
-                },
-              )
+                }
+              ),
             ),
           ],
         ),
@@ -101,9 +93,13 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   // 날짜가 선택될 때 마다 실행할 함수
-  void onDaySelected(DateTime selectedDate, DateTime focusedDate) {
-    setState(() {
-      this.selectedDate = selectedDate;
-    });
+  void onDaySelected(
+    DateTime selectedDate,
+    DateTime focusedDate,
+    BuildContext context,
+  ) {
+    final provider = context.read<ScheduleProvider>();
+    provider.changeScheduleDate(date: selectedDate);
+    provider.getSchedules(date: selectedDate);
   }
 }
