@@ -96,3 +96,7 @@ lib/generated_plugin_registrant.dart
 # add_rule
 agora.dart
 api.dart
+calendar_scheduler/android/app/google-services.json
+calendar_scheduler/ios/firebase_app_id_file.json
+calendar_scheduler/ios/Runner/GoogleService-Info.plist
+calendar_scheduler/lib/firebase_options.dart
