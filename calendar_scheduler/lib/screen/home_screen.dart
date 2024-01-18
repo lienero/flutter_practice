@@ -62,13 +62,15 @@ class _HomeScreenState extends State<HomeScreen> {
               builder: (context, snapshot) {
                 return TodayBanner( // build() 함수 내부의 TodayBanner 위젯
                   selectedDate: selectedDate,
+                  // 개수 가져오기
                   count: snapshot.data?.docs.length ?? 0,
                 );
               }
             ),
             SizedBox(height: 8),
             Expanded( // 남는 공간 모두 차지하기
-              child: StreamBuilder<QuerySnapshot>(
+              child: StreamBuilder<QuerySnapshot>( // StreamBuilder 구현하기
+                // 파이어스토어로부터 일정 가져오기
                 stream: FirebaseFirestore.instance
                   .collection('schedule')
                   .where(
@@ -77,16 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
                   )
                   .snapshots(),
                 builder: (context, snapshot) {
+                  // Stream를 가져오는 동안 에러가 났을 때 보여줄 화면
                   if (snapshot.hasError) {
                     return Center(
                       child: Text('일정 정보를 가져오지 못했습니다.'),
                     );
                   }
 
+                  // 로딩 중 일때 보여줄 화면
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container();
                   }
-
+                  
+                  // ScheduleModel로 데이터 매핑하기
                   final schedules = snapshot.data!.docs.map(
                     (QueryDocumentSnapshot e) => ScheduleModel.fromJson(
                       json: (e.data() as Map<String, dynamic>),
@@ -105,10 +110,16 @@ class _HomeScreenState extends State<HomeScreen> {
                         // 밀기 방향(오른쪽에서 왼쪽으로)
                         direction: DismissDirection.startToEnd,
                         // 밀기 했을 때 실행할 함수
-                        onDismissed: (DismissDirection direction) { },
+                        onDismissed: (DismissDirection direction) {
+                          FirebaseFirestore.instance
+                            .collection('schedule')
+                            .doc(schedule.id)
+                            .delete();
+                        },
                         child: Padding( // 좌우로 패딩을 추가해서 ui 개선
                           padding: const EdgeInsets.only(bottom: 8, left: 8, right: 8),
                           child: ScheduleCard(
+                            // 특정 문서 삭제하기
                             startTime: schedule.startTime,
                             endTime: schedule.endTime,
                             content: schedule.content,
@@ -132,7 +143,7 @@ class _HomeScreenState extends State<HomeScreen> {
     DateTime focusedDate,
     BuildContext context,
   ) {
-    setState(() {
+    setState(() { // 새로운 날짜가 선택될 때마다 selectedDate값 변경해주기
       this.selectedDate = selectedDate;
     });
   }
