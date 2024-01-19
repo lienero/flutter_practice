@@ -4,6 +4,7 @@ import 'package:calendar_scheduler/component/main_calendar.dart';
 import 'package:calendar_scheduler/component/schedule_card.dart';
 import 'package:calendar_scheduler/component/today_banner.dart';
 import 'package:calendar_scheduler/component/schedule_bottom_sheet.dart';
+import 'package:calendar_scheduler/component/banner_ad_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:calendar_scheduler/model/schedule_model.dart';
 import 'package:intl/intl.dart';
@@ -98,9 +99,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ).toList();
 
-                  return ListView.builder( // 화면에 보이는 값들만 렌더링하는 리스트
+                  return ListView.separated( // 화면에 보이는 값들만 렌더링하는 리스트
                     // 리스트에 입력할 값들의 총 개수
                     itemCount: schedules.length,
+                    separatorBuilder: (context, index) {
+                      return BannerAdWidget();
+                    },
                     itemBuilder: (context, index) {
                       // 현재 인덱스에 해당되는 일정
                       final schedule = schedules[index];

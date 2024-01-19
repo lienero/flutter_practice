@@ -47,6 +47,7 @@ dependencies:
   uuid: 4.2.2 # UUID를 생성하는 플러그인
   firebase_core: ^2.24.2 # 파이어베이스 코어(기본) 플러그인
   cloud_firestore: ^4.14.0 # 파이어스토어 플러그인
+  google_mobile_ads: ^4.0.0 # 구글 애드몹
 
 dev_dependencies:
   flutter_test:

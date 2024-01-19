@@ -3,6 +3,10 @@
         android:label="calendar_scheduler"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-7842537362085275~9122029122"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true"
